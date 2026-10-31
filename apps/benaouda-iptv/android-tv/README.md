@@ -1,6 +1,6 @@
 # BENAOUDA TV Android TV
 
-This folder contains a native Android TV wrapper around the BENAOUDA TV streaming dashboard. The app loads the existing web UI from local app assets so the branding and streaming layout stay consistent on Fire TV / Android TV devices.
+This folder contains a native Android TV wrapper around the BENAOUDA TV dashboard. Its Jellyfin page connects to a Jellyfin server using the public Jellyfin HTTP API, displays the signed-in user's movies and series, and requests a playback stream from that server. No Jellyfin client source is bundled into this project.
 
 ## Requirements
 
@@ -19,7 +19,12 @@ This folder contains a native Android TV wrapper around the BENAOUDA TV streamin
 ```
 
 The generated APK will be in `app/build/outputs/apk/debug/`.
+The Gradle build copies the web app's current `index.html`, `script.js`, and `styles.css` into the Android assets before packaging.
 
-## Notes
+## Connect to Jellyfin
 
-This is a native TV wrapper, not a backend IPTV service. For real Fire TV use, target a device still running Fire OS and keep the app's runtime restricted to supported sideloading workflows.
+Open the **Jellyfin** tab and enter the server URL, username, and password. The URL can include a reverse-proxy path, for example `https://media.example.com/jellyfin`. The app stores the server address and Jellyfin access token on the device so it can reconnect; it does not save the password. Disconnect from the Jellyfin page to clear the saved token.
+
+The Android app sends Jellyfin API requests through a WebView message bridge restricted to the app's local asset origin. The browser preview uses `fetch`; Jellyfin must allow the preview page's origin in its CORS settings. For video playback, the server must provide a stream compatible with the device's WebView, or a supported MP4 transcode profile.
+
+This remains a client wrapper, not an IPTV backend or media server. Install it only on Android TV or Fire OS devices that support APK sideloading; Vega OS does not support this installation path.

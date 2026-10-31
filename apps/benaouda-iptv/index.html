@@ -60,7 +60,7 @@
           </div>
           <div class="status-wrap">
             <span class="status-dot"></span>
-            <span>Free live</span>
+            <span id="appStatusLabel">Free live</span>
           </div>
         </header>
 
@@ -68,7 +68,62 @@
           <button class="page-tab active" type="button" data-page="home">Home</button>
           <button class="page-tab" type="button" data-page="favorites">Favorites</button>
           <button class="page-tab" type="button" data-page="guide">Guide</button>
+          <button class="page-tab" type="button" data-page="jellyfin">Jellyfin</button>
         </nav>
+
+        <section class="jellyfin-page view-section" data-view="jellyfin" hidden>
+          <div class="section-heading">
+            <div>
+              <h3>Jellyfin library</h3>
+              <p>Connect to your server to browse and play your own media.</p>
+            </div>
+          </div>
+
+          <form id="jellyfinConnectForm" class="jellyfin-connect">
+            <label>
+              Server address
+              <input id="jellyfinServer" name="server" type="url" inputmode="url" placeholder="http://192.168.1.20:8096" autocomplete="url" required />
+            </label>
+            <label>
+              Username
+              <input id="jellyfinUsername" name="username" type="text" autocomplete="username" required />
+            </label>
+            <label>
+              Password
+              <input id="jellyfinPassword" name="password" type="password" autocomplete="current-password" required />
+            </label>
+            <button id="jellyfinConnectButton" class="primary-btn" type="submit">Connect</button>
+          </form>
+
+          <div class="jellyfin-account" id="jellyfinAccount" hidden>
+            <p id="jellyfinAccountLabel"></p>
+            <button id="jellyfinDisconnectButton" class="secondary-btn" type="button">Disconnect</button>
+          </div>
+          <p id="jellyfinStatus" class="jellyfin-status" role="status" aria-live="polite"></p>
+
+          <div id="jellyfinLibrary" hidden>
+            <div class="jellyfin-toolbar">
+              <div class="jellyfin-filters" role="group" aria-label="Filter Jellyfin library">
+                <button id="jellyfinBackButton" class="jellyfin-filter" type="button" hidden>Back to library</button>
+                <button class="jellyfin-filter active" type="button" data-jellyfin-filter="All">All</button>
+                <button class="jellyfin-filter" type="button" data-jellyfin-filter="Movie">Movies</button>
+                <button class="jellyfin-filter" type="button" data-jellyfin-filter="Series">Series</button>
+              </div>
+              <input id="jellyfinSearch" type="search" placeholder="Search your library" aria-label="Search Jellyfin library" />
+            </div>
+            <div id="jellyfinItems" class="jellyfin-items" aria-live="polite"></div>
+            <div class="jellyfin-player-wrap" id="jellyfinPlayerWrap" hidden>
+              <div class="player-header">
+                <div>
+                  <p class="small-label">Now playing</p>
+                  <h3 id="jellyfinNowPlaying"></h3>
+                </div>
+                <button id="jellyfinClosePlayer" class="secondary-btn" type="button">Close player</button>
+              </div>
+              <video id="jellyfinPlayer" controls playsinline></video>
+            </div>
+          </div>
+        </section>
 
         <section class="hero view-section" data-view="home">
           <div class="hero-copy">
@@ -115,7 +170,7 @@
           </div>
         </section>
 
-        <section class="trending-row" aria-label="Continue watching">
+        <section class="trending-row view-section" data-view="home" aria-label="Continue watching">
           <div class="section-heading compact">
             <div>
               <p class="small-label">Continue</p>
@@ -174,7 +229,7 @@
           <div id="guideList" class="guide-list" aria-live="polite"></div>
         </section>
 
-        <section class="video-section">
+        <section class="video-section view-section" data-view="home">
           <div class="player-wrap">
             <div class="player-header">
               <div>
