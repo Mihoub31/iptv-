@@ -3,17 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-val syncWebAssets by tasks.registering(Copy::class) {
-    from(rootProject.projectDir.parentFile) {
-        include("index.html", "script.js", "styles.css")
-    }
-    into(layout.projectDirectory.dir("src/main/assets/benaouda"))
-}
-
-tasks.named("preBuild").configure {
-    dependsOn(syncWebAssets)
-}
-
 android {
     namespace = "com.benaouda.tv"
     compileSdk = 34
